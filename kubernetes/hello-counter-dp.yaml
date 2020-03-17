@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: hello-counter 
+  labels:
+    app: hello-counter
+spec:
+  selector:
+    matchLabels:
+      app: hello-counter
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: hello-counter
+    spec:
+      containers:
+      - name: hello-counter
+        image: hello-counter:latest
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: REDIS_HOST
+            value: redis.pk.com
+        ports:
+          - containerPort: 5000
+        resources:
+          limits:
+            memory: "50Mi"
+            cpu: "100m"
+        livenessProbe:
+          httpGet:
+            path: /check
+            port: 5000
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /check
+            port: 5000
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
