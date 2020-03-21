@@ -28,7 +28,7 @@ def hello():
       counter_message = render_template('counter_message_template', visitor_number=visitor_number)
     except:
       app.logger.error("Couldn't do something with Redis!")
-      counter_message = ''
+      counter_message = 'Error with Redis'
 
     message = "Hello World!"
 
